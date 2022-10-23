@@ -22,7 +22,11 @@ const PageButton = ({ pageNum, isLast }: PageButtonProps) => {
 	};
 
 	return (
-		<button className={classNames} onClick={onPageChange}>
+		<button
+			className={classNames}
+			onClick={onPageChange}
+			disabled={pageNum === currentPage}
+		>
 			{pageNum}
 		</button>
 	);
