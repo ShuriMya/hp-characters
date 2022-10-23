@@ -1,7 +1,19 @@
-import { useState } from "react";
+import { createContext, ReactNode, useContext, useState } from "react";
 import { Character } from "./api";
 
-const useSearchbar = () => {
+interface SearchbarContextT {
+	search: string;
+	setSearch: (value: string) => void;
+	getSearchedCharacters: (characters: Character[]) => Character[];
+}
+
+const SearchbarContext = createContext<SearchbarContextT>({
+	search: "",
+	setSearch: () => {},
+	getSearchedCharacters: () => [],
+});
+
+export const SearchbarProvider = ({ children }: { children: ReactNode }) => {
 	const [search, setSearch] = useState("");
 
 	const getSearchedCharacters = (characters: Character[]) => {
@@ -15,7 +27,13 @@ const useSearchbar = () => {
 		return searchedCharacters;
 	};
 
-	return { search, setSearch, getSearchedCharacters };
+	return (
+		<SearchbarContext.Provider
+			value={{ search, setSearch, getSearchedCharacters }}
+		>
+			{children}
+		</SearchbarContext.Provider>
+	);
 };
 
-export default useSearchbar;
+export const useSearchbar = () => useContext(SearchbarContext);

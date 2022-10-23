@@ -3,30 +3,26 @@ import useHPApi from "./hooks/api";
 
 import CharactersListPage from "pages/CharactersList";
 import CharacterDetailsPage from "pages/CharacterDetails";
-import useSearchbar from "hooks/search";
+import { SearchbarProvider } from "hooks/search";
 
 function App() {
 	const { charactersList } = useHPApi();
-	const { search, setSearch, getSearchedCharacters } = useSearchbar();
+	console.log("aaa");
 
 	return (
 		<BrowserRouter>
-			<Routes>
-				<Route
-					path="/"
-					element={
-						<CharactersListPage
-							characters={getSearchedCharacters(charactersList)}
-							search={search}
-							setSearch={setSearch}
-						/>
-					}
-				/>
-				<Route
-					path="/:characterId"
-					element={<CharacterDetailsPage characters={charactersList} />}
-				/>
-			</Routes>
+			<SearchbarProvider>
+				<Routes>
+					<Route
+						path="/"
+						element={<CharactersListPage characters={charactersList} />}
+					/>
+					<Route
+						path="/:characterId"
+						element={<CharacterDetailsPage characters={charactersList} />}
+					/>
+				</Routes>
+			</SearchbarProvider>
 		</BrowserRouter>
 	);
 }

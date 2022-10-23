@@ -1,11 +1,9 @@
+import { useSearchbar } from "hooks/search";
 import { ChangeEvent } from "react";
 
-interface SearchbarProps {
-	value: string;
-	onChange: (value: string) => void;
-}
+const Searchbar = () => {
+	const { search: value, setSearch: onChange } = useSearchbar();
 
-const Searchbar = ({ value, onChange }: SearchbarProps) => {
 	const onSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
 		onChange(e.target.value);
 	};

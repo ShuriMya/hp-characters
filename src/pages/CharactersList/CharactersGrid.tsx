@@ -2,6 +2,7 @@ import { Character } from "hooks/api";
 import { Link } from "react-router-dom";
 
 import CharacterPortrait from "pages/CharacterDetails/CharacterPortrait";
+import { useSearchbar } from "hooks/search";
 
 interface CharacterGridCardProps {
 	character: Character;
@@ -29,13 +30,16 @@ const CharacterGridCard = ({ character }: CharacterGridCardProps) => {
 };
 
 const CharactersGrid = ({ characters }: CharactersGridProps) => {
-	if (!characters.length) {
+	const { getSearchedCharacters } = useSearchbar();
+	const searchedCharacters = getSearchedCharacters(characters);
+
+	if (!searchedCharacters.length) {
 		return <div>No characters found</div>;
 	}
 
 	return (
 		<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 auto-rows-[1fr]">
-			{characters.map((char) => (
+			{searchedCharacters.map((char) => (
 				<CharacterGridCard character={char} key={char.id} />
 			))}
 		</div>
