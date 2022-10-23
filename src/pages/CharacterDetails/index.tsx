@@ -7,10 +7,10 @@ import CharacterPortrait from "./CharacterPortrait";
 import CharacterInfo from "./CharacterInfo";
 
 const CharacterDetailsPage = () => {
-	const { charactersList } = useHPApi();
+	const { allCharacters } = useHPApi();
 	const { characterId } = useParams();
 
-	if (!charactersList) {
+	if (!allCharacters) {
 		return (
 			<div className="flex flex-col h-full">
 				<PuffLoader className="m-auto" color="#fff" />
@@ -18,7 +18,7 @@ const CharacterDetailsPage = () => {
 		);
 	}
 
-	const character = charactersList.find((char) => char.id === characterId);
+	const character = allCharacters.find((char) => char.id === characterId);
 
 	if (!character) return <div>Character not found</div>;
 

@@ -3,18 +3,18 @@ import { CharacterProvider } from "./hooks/api";
 
 import CharactersListPage from "pages/CharactersList";
 import CharacterDetailsPage from "pages/CharacterDetails";
-import { SearchbarProvider } from "hooks/search";
+import { FilterProvider } from "hooks/filter";
 
 function App() {
 	return (
 		<BrowserRouter>
 			<CharacterProvider>
-				<SearchbarProvider>
+				<FilterProvider>
 					<Routes>
 						<Route path="/" element={<CharactersListPage />} />
 						<Route path="/:characterId" element={<CharacterDetailsPage />} />
 					</Routes>
-				</SearchbarProvider>
+				</FilterProvider>
 			</CharacterProvider>
 		</BrowserRouter>
 	);

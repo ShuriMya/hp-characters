@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { PuffLoader } from "react-spinners";
 
 import CharacterPortrait from "pages/CharacterDetails/CharacterPortrait";
-import { useSearchbar } from "hooks/search";
+import { useFilter } from "hooks/filter";
 
 interface CharacterGridCardProps {
 	character: Character;
@@ -27,24 +27,29 @@ const CharacterGridCard = ({ character }: CharacterGridCardProps) => {
 };
 
 const CharactersGrid = () => {
-	const { getSearchedCharacters } = useSearchbar();
-	const { charactersList } = useHPApi();
+	const { getSearchedCharacters, paginate } = useFilter();
+	const { allCharacters } = useHPApi();
 
-	if (!charactersList) {
+	if (!allCharacters) {
 		return <PuffLoader className="m-auto" color="#fff" />;
 	}
 
-	const searchedCharacters = getSearchedCharacters(charactersList);
+	const characters = getSearchedCharacters(allCharacters);
 
-	if (!searchedCharacters.length) {
+	if (!characters.length) {
 		return <div>No characters found</div>;
 	}
 
 	return (
-		<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 auto-rows-[1fr]">
-			{searchedCharacters.map((char) => (
-				<CharacterGridCard character={char} key={char.id} />
-			))}
+		<div>
+			<div className="flex text-sm mb-2 justify-end">
+				{characters.length} character{characters.length > 1 && "s"}
+			</div>
+			<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 auto-rows-[1fr]">
+				{paginate(characters).map((char) => (
+					<CharacterGridCard character={char} key={char.id} />
+				))}
+			</div>
 		</div>
 	);
 };

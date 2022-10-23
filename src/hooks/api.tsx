@@ -32,11 +32,11 @@ export interface Character extends CharacterAPI {
 }
 
 interface CharactersContextT {
-	charactersList: Character[] | undefined;
+	allCharacters: Character[] | undefined;
 }
 
 const CharactersContext = createContext<CharactersContextT>({
-	charactersList: undefined,
+	allCharacters: undefined,
 });
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
@@ -51,16 +51,16 @@ export const CharacterProvider = ({ children }: { children: ReactNode }) => {
 		fetcher
 	);
 
-	let charactersList = undefined;
+	let allCharacters = undefined;
 	if (data) {
-		charactersList = data.map((char) => ({
+		allCharacters = data.map((char) => ({
 			...char,
 			id: characterNamesToId(char.name, char.alternate_names),
 		}));
 	}
 
 	return (
-		<CharactersContext.Provider value={{ charactersList }}>
+		<CharactersContext.Provider value={{ allCharacters }}>
 			{children}
 		</CharactersContext.Provider>
 	);
