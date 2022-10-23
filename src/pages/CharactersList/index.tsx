@@ -1,17 +1,12 @@
-import { Character } from "hooks/api";
 import CharactersGrid from "./CharactersGrid";
 import Searchbar from "./Searchbar";
 
-interface CharactersListPageProps {
-	characters: Character[];
-}
-
-const CharactersListPage = ({ characters }: CharactersListPageProps) => {
+const CharactersListPage = () => {
 	return (
-		<div>
+		<div className="flex flex-col h-full">
 			<h1 className="text-4xl font-bold mt-4 mb-12">All characters</h1>
 			<Searchbar />
-			<CharactersGrid characters={characters} />
+			<CharactersGrid />
 		</div>
 	);
 };

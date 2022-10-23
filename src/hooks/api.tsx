@@ -1,3 +1,4 @@
+import { createContext, ReactNode, useContext } from "react";
 import useSWR from "swr";
 
 interface CharacterAPI {
@@ -30,23 +31,39 @@ export interface Character extends CharacterAPI {
 	id: string;
 }
 
+interface CharactersContextT {
+	charactersList: Character[] | undefined;
+}
+
+const CharactersContext = createContext<CharactersContextT>({
+	charactersList: undefined,
+});
+
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const characterNamesToId = (name: string, alternateNames: string[]) => {
 	return [name, ...alternateNames].join("_").replaceAll(" ", "").toLowerCase();
 };
 
-const useHPApi = () => {
-	const { data: characters = [] } = useSWR<CharacterAPI[]>(
+export const CharacterProvider = ({ children }: { children: ReactNode }) => {
+	const { data } = useSWR<CharacterAPI[]>(
 		"https://hp-api.herokuapp.com/api/characters",
 		fetcher
 	);
-	const charactersList = characters.map((char) => ({
-		...char,
-		id: characterNamesToId(char.name, char.alternate_names),
-	}));
 
-	return { charactersList };
+	let charactersList = undefined;
+	if (data) {
+		charactersList = data.map((char) => ({
+			...char,
+			id: characterNamesToId(char.name, char.alternate_names),
+		}));
+	}
+
+	return (
+		<CharactersContext.Provider value={{ charactersList }}>
+			{children}
+		</CharactersContext.Provider>
+	);
 };
 
-export default useHPApi;
+export const useHPApi = () => useContext(CharactersContext);

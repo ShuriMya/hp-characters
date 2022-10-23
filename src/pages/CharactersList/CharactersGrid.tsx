@@ -1,15 +1,12 @@
-import { Character } from "hooks/api";
+import { Character, useHPApi } from "hooks/api";
 import { Link } from "react-router-dom";
+import { PuffLoader } from "react-spinners";
 
 import CharacterPortrait from "pages/CharacterDetails/CharacterPortrait";
 import { useSearchbar } from "hooks/search";
 
 interface CharacterGridCardProps {
 	character: Character;
-}
-
-interface CharactersGridProps {
-	characters: Character[];
 }
 
 const CharacterGridCard = ({ character }: CharacterGridCardProps) => {
@@ -29,9 +26,15 @@ const CharacterGridCard = ({ character }: CharacterGridCardProps) => {
 	);
 };
 
-const CharactersGrid = ({ characters }: CharactersGridProps) => {
+const CharactersGrid = () => {
 	const { getSearchedCharacters } = useSearchbar();
-	const searchedCharacters = getSearchedCharacters(characters);
+	const { charactersList } = useHPApi();
+
+	if (!charactersList) {
+		return <PuffLoader className="m-auto" color="#fff" />;
+	}
+
+	const searchedCharacters = getSearchedCharacters(charactersList);
 
 	if (!searchedCharacters.length) {
 		return <div>No characters found</div>;

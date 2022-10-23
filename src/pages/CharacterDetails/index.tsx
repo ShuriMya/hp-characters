@@ -1,17 +1,24 @@
 import { Link, useParams } from "react-router-dom";
+import { PuffLoader } from "react-spinners";
 
-import { Character } from "hooks/api";
+import { useHPApi } from "hooks/api";
 import CharacterDetailsHeader from "./CharacterDetailsHeader";
 import CharacterPortrait from "./CharacterPortrait";
 import CharacterInfo from "./CharacterInfo";
 
-interface CharacterDetailsPageProps {
-	characters: Character[];
-}
-
-const CharacterDetailsPage = ({ characters }: CharacterDetailsPageProps) => {
+const CharacterDetailsPage = () => {
+	const { charactersList } = useHPApi();
 	const { characterId } = useParams();
-	const character = characters.find((char) => char.id === characterId);
+
+	if (!charactersList) {
+		return (
+			<div className="flex flex-col h-full">
+				<PuffLoader className="m-auto" color="#fff" />
+			</div>
+		);
+	}
+
+	const character = charactersList.find((char) => char.id === characterId);
 
 	if (!character) return <div>Character not found</div>;
 
