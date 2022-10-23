@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { capitalize } from "lodash";
 
-import { Character } from "api";
+import { Character } from "hooks/api";
 
 interface CharacterInfoProps {
 	character: Character;

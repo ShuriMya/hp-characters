@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 
-import { Character } from "api";
+import { Character } from "hooks/api";
 import CharacterDetailsHeader from "./CharacterDetailsHeader";
 import CharacterPortrait from "./CharacterPortrait";
 import CharacterInfo from "./CharacterInfo";
@@ -21,7 +21,7 @@ const CharacterDetailsPage = ({ characters }: CharacterDetailsPageProps) => {
 				← Back to all characters
 			</Link>
 			<CharacterDetailsHeader character={character} />
-			<div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+			<div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
 				<div className="flex items-center col-span-1">
 					<CharacterPortrait
 						src={character.image}
